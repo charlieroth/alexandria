@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/charlieroth/alexandria/app/alexandria-server/build/all"
+	"github.com/charlieroth/alexandria/app/services/alexandria-api/build/all"
 	"github.com/charlieroth/alexandria/business/web/mux"
 )
 

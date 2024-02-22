@@ -1,7 +1,7 @@
 package all
 
 import (
-	"github.com/charlieroth/alexandria/app/alexandria-server/handlers/checkgrp"
+	"github.com/charlieroth/alexandria/app/services/alexandria-api/handlers/checkgrp"
 	"github.com/charlieroth/alexandria/business/web/mux"
 	"github.com/charlieroth/alexandria/foundation/web"
 )
