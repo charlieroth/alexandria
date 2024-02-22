@@ -35,7 +35,7 @@ func (app *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	app.mux.ServeHTTP(w, r)
 }
 
-func (app *App) Handle(method string, group string, path string, handler Handler) {
+func (app *App) Handle(method string, path string, handler Handler) {
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		if err := handler(r.Context(), w, r); err != nil {
 			if validateError(err) {
@@ -45,12 +45,7 @@ func (app *App) Handle(method string, group string, path string, handler Handler
 		}
 	}
 
-	fullPath := path
-	if group != "" {
-		fullPath = "/" + group + path
-	}
-
-	fullPath = fmt.Sprintf("%s %s", method, fullPath)
+	fullPath := fmt.Sprintf("%s %s", method, path)
 	app.mux.HandleFunc(fullPath, handlerFunc)
 }
 

@@ -11,7 +11,7 @@ import (
 type Config struct{}
 
 func Routes(app *web.App, config Config) {
-	const version = "v1"
+
 	handlers := new()
-	app.Handle(http.MethodGet, version, "/liveness", handlers.liveness)
+	app.Handle(http.MethodGet, "/liveness", handlers.liveness)
 }

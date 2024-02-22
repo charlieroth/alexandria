@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/charlieroth/alexandria/app/alexandria-api/v1/build/all"
-	"github.com/charlieroth/alexandria/business/web/v1/mux"
+	"github.com/charlieroth/alexandria/app/alexandria-server/build/all"
+	"github.com/charlieroth/alexandria/business/web/mux"
 )
 
 func main() {
