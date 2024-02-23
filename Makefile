@@ -1,41 +1,56 @@
 # ==============================================================================
-# Define dependencies
+# Dependencies
 
 GOLANG          := golang:1.22
 ALPINE          := alpine:3.19
-POSTGRES        := postgres:16.2
 
-NAMESPACE       := alexandria-system
+REGISTRY        := registry.digitalocean.com/tacit-tech-registry
 APP             := alexandria
-BASE_IMAGE_NAME := tacittech/alexandria
+BASE_IMAGE_NAME := tacit-tech/alexandria
 SERVICE_NAME    := alexandria-api
-VERSION         := 0.0.1
-SERVICE_IMAGE   := $(BASE_IMAGE_NAME)/$(SERVICE_NAME):$(VERSION)
+TAG             := latest
+IMAGE_NAME      := $(REGISTRY)/$(BASE_IMAGE_NAME)/$(SERVICE_NAME):$(TAG)
 
 # ==============================================================================
-# Building containers
-
-all: service
+# Containers
 
 docker-build-service:
-	docker build \
+	docker build --platform=linux/amd64 \
 		-f zarf/docker/Dockerfile.service \
-		-t $(SERVICE_IMAGE) \
-		--build-arg BUILD_REF=$(VERSION) \
+		-t $(IMAGE_NAME) \
+		--build-arg BUILD_REF=$(TAG) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
 
+docker-push-service:
+	docker push $(IMAGE_NAME)
+
 # ==============================================================================
-# Operations
+# Kubernetes
+
+k8s-apply-service:
+	kubectl apply -f zarf/k8s
+
+k8s-pods:
+	kubectl get pods
+
+k8s-services:
+	kubectl get services
+
+k8s-deployments:
+	kubectl get deployments
+
+# ==============================================================================
+# Development
 
 run:
 	go run app/alexandria-server/main.go
 
 admin:
-	go run app/tooling/sales-admin/main.go
+	go run app/tooling/alexandria-admin/main.go
 
 ready:
-	curl -il http://localhost:3000/v1/readiness
+	curl -il http://localhost:8080/readiness
 
 live:
-	curl -il http://localhost:3000/v1/liveness
+	curl -il http://localhost:8080/liveness

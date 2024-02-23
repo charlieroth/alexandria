@@ -38,7 +38,7 @@ func run(ctx context.Context) error {
 	}
 
 	api := http.Server{
-		Addr:         "0.0.0.0:3000",
+		Addr:         "0.0.0.0:8080",
 		Handler:      mux.WebApi(muxConfig, buildRoutes()),
 		ReadTimeout:  time.Duration(5 * time.Second),
 		WriteTimeout: time.Duration(5 * time.Second),
@@ -48,7 +48,7 @@ func run(ctx context.Context) error {
 	serverErrors := make(chan error, 1)
 
 	go func() {
-		fmt.Println("listening on http://0.0.0.0:3000")
+		fmt.Println("listening on http://0.0.0.0:8080")
 		serverErrors <- api.ListenAndServe()
 	}()
 

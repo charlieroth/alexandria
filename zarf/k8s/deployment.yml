@@ -1,0 +1,19 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: alexandria-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alexandria-api
+  template:
+    metadata:
+      labels:
+        app: alexandria-api
+    spec:
+      containers:
+        - name: alexandria-api
+          image: "registry.digitalocean.com/tacit-tech-registry/tacit-tech/alexandria/alexandria-api:latest"
+          ports:
+            - containerPort: 8080
