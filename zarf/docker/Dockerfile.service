@@ -1,0 +1,33 @@
+# Build the Go Binary
+FROM golang:1.22 as build
+
+ENV CGO_ENABLED 0
+ARG BUILD_REF
+
+# Copy the source code into the container
+COPY . /alexandria
+
+# Build the service binary
+WORKDIR /alexandria/app/services/alexandria-api
+RUN go build -ldflags "-X main.build=${BUILD_REF}"
+
+# Run the Go Binary in Alpine.
+FROM alpine:3.19
+ARG BUILD_DATE
+ARG BUILD_REF
+
+RUN addgroup -g 1000 -S alexander && \
+  adduser -u 1000 -h /alexandria -G alexander -S alexander
+
+COPY --from=build --chown=alexander:alexander /alexandria/app/services/alexandria-api/alexandria-api /alexandria/alexandria-api
+
+WORKDIR /alexandria
+USER alexander
+CMD ["./alexandria-api"]
+
+LABEL org.opencontainers.image.created="${BUILD_DATE}" \
+  org.opencontainers.image.title="alexandria-api" \
+  org.opencontainers.image.authors="Charlie Roth <charlie@tacittech.org>" \
+  org.opencontainers.image.source="https://github.com/charlieroth/alexandria/tree/master/app/services/alexandria-api" \
+  org.opencontainers.image.revision="${BUILD_REF}" \
+  org.opencontainers.image.vendor="Tacit Tech"
