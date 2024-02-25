@@ -16,7 +16,7 @@ IMAGE_NAME      := $(REGISTRY)/$(BASE_IMAGE_NAME)/$(SERVICE_NAME):$(TAG)
 
 docker-build-service:
 	docker build --platform=linux/amd64 \
-		-f zarf/docker/Dockerfile.service \
+		-f Dockerfile.service \
 		-t $(IMAGE_NAME) \
 		--build-arg BUILD_REF=$(TAG) \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
@@ -29,7 +29,7 @@ docker-push-service:
 # Kubernetes
 
 k8s-apply-service:
-	kubectl apply -f zarf/k8s
+	kubectl apply -f k8s
 
 k8s-pods:
 	kubectl get pods
@@ -44,10 +44,10 @@ k8s-deployments:
 # Development
 
 run:
-	go run app/alexandria-server/main.go
+	go run cmd/alexandria-api/main.go
 
-admin:
-	go run app/tooling/alexandria-admin/main.go
+run-cli:
+	go run cmd/alexandria-cli/main.go
 
 ready:
 	curl -il http://localhost:8080/readiness
