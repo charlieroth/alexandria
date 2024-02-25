@@ -14,7 +14,7 @@ IMAGE_NAME      := $(REGISTRY)/$(BASE_IMAGE_NAME)/$(SERVICE_NAME):$(TAG)
 # ==============================================================================
 # Containers
 
-docker-build-service:
+docker-build-api:
 	docker build --platform=linux/amd64 \
 		-f Dockerfile.service \
 		-t $(IMAGE_NAME) \
@@ -22,13 +22,13 @@ docker-build-service:
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
 
-docker-push-service:
+docker-push-api:
 	docker push $(IMAGE_NAME)
 
 # ==============================================================================
 # Kubernetes
 
-k8s-apply-service:
+k8s-apply-api:
 	kubectl apply -f k8s
 
 k8s-pods:
