@@ -1,9 +1,8 @@
 .git/
 .dockerignore
 .gitignore
-app/frontends/
-zarf/docker/
-zarf/k8s/
+k8s/
+Dockerfile
 CONTRIBUTORS
 LICENSE
 Makefile
